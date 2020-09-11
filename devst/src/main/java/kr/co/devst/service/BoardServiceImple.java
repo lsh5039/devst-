@@ -38,9 +38,9 @@ public class BoardServiceImple implements BoardService{
 		list = boardDao.getBoardStudyList(start, num);
 		for(int i=0;i<list.size();i++) {
 			String date	 = list.get(i).getM_dt();
-			
 			list.get(i).setM_dt(date.split(" ")[0].replace("-", ""));
 		}
+		
 		return list;
 	}
 
@@ -48,7 +48,22 @@ public class BoardServiceImple implements BoardService{
 
 	@Override
 	public List<BoardVO> getBoardNomalList(int start, int num) {
-		return boardDao.getBoardNomalList(start, num);
+		List<BoardVO> list = new ArrayList<BoardVO>();
+		list = boardDao.getBoardNomalList(start, num);
+		for(int i=0;i<list.size();i++) {
+			String date	 = list.get(i).getM_dt();
+			list.get(i).setM_dt(date.split(" ")[0].replace("-", ""));
+		}
+		
+		return list;
+	}
+
+
+
+	@Override
+	public int getPageNum(String category) {
+		
+		return boardDao.getPageNum(category);
 	}
 
 }

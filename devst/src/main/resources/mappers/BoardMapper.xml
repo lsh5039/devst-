@@ -31,4 +31,8 @@
 		ORDER BY B.board_pk DESC
 		LIMIT #{start}, #{num};
 	</select>
+	
+	<select id="getPageNum" resultType="java.lang.Integer">
+		SELECT (TRUNCATE(COUNT(*)/10,0)+1) AS cnt FROM t_board WHERE category = #{category};
+	</select>
 </mapper>

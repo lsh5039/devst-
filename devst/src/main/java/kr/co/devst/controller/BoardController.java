@@ -2,9 +2,9 @@ package kr.co.devst.controller;
 
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -57,35 +57,24 @@ public class BoardController {
 	public String goBoardShow(Model model, @RequestParam(value = "no", required = false, defaultValue = "0" )int no) {
 		List <BoardVO> list = new ArrayList<BoardVO>(); //어떤 게시물을 담을 그릇
 		String category = null;
+		Integer pageNum = null;
 		
-		Calendar cal = Calendar.getInstance();
+		String currentTime = Utils.getCurrentDate("yyyyMMdd");
 		
-		String currentTime = null;
-		int year = cal.get(Calendar.YEAR);
-		int month = cal.get(Calendar.MONTH) + 1;
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		/*
-		 * int hour = cal.get(Calendar.HOUR_OF_DAY); int min = cal.get(Calendar.MINUTE);
-		 * int sec = cal.get(Calendar.SECOND);
-		 */
-		
-		currentTime = year + "" + month + "" + day;
-		
-		System.out.println("현재시각 : "+currentTime);
-
-		
-		
-		switch(no) {
+			switch(no) {
 			case 0://잘못된 접근 메인으로
 				return "redirect:/devst/";
 				
 			case 1://일반게시판
 				list = boardService.getBoardNomalList(0, 10);
+				pageNum = boardService.getPageNum("일반");
+				
 				category = "일반게시판";
 				break;
 			case 2://스터디게시판
-				list = boardService.getBoardStudyList(0, 10);
 				
+				list = boardService.getBoardStudyList(0, 10);
+				pageNum = boardService.getPageNum("스터디구인");
 				category = "스터디게시판";
 				break;
 			case 3://???
@@ -95,6 +84,7 @@ public class BoardController {
 				
 		}
 		model.addAttribute("category",category);
+		model.addAttribute("pageNum",pageNum);
 		model.addAttribute("list",list);
 		model.addAttribute("currentTime",currentTime);
 		return "/user/board/board";
